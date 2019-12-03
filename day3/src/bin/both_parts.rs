@@ -24,8 +24,9 @@ fn main() -> Result<(), Error> {
         lines.push(positions);
     });
 
-    let mut intersects: Vec<[i32;2]> = vec![];
-    let mut l1pos: [i32;2] = [0,0];
+    let mut intersects: Vec<[i32;3]> = vec![];
+    let mut l1pos: [i32;3] = [0,0,0];
+    let mut l2pos: [i32;3] = [0,0,0];
     lines[0].iter().for_each(|i| {
         (0..i[1]).for_each(|_| {
             match i[0] {
@@ -35,7 +36,8 @@ fn main() -> Result<(), Error> {
                 3 => l1pos[0] -= 1,
                 _ => panic!("unkonwn dir")
             }
-            let mut l2pos: [i32;2] = [0,0];
+            l1pos[2] += 1;
+            l2pos[0] = 0; l2pos[1] = 0; l2pos[2] = 0;
             lines[1].iter().for_each(|j| {
                 (0..j[1]).for_each(|_| {
                     match j[0] {
@@ -45,9 +47,10 @@ fn main() -> Result<(), Error> {
                         3 => l2pos[0] -= 1,
                         _ => panic!("unkonwn dir")
                     }
+                    l2pos[2] += 1;
                     if l1pos[0] == l2pos[0] && l1pos[1] == l2pos[1] {
                         intersects.push(l1pos.clone());
-                        println!("found one at {:?}", l2pos);
+                        println!("found one at {:?} - {:?}", l2pos, l1pos);
                     }
                 })
             });
